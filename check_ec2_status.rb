@@ -39,7 +39,8 @@ end
 if ! instances.eql? past_instances and past_instances.length > 0
   instances.each_key do |id|
     if instances[id] != past_instances[id]
-      puts "#{id} state changed #{past_instances[id]} -> #{instances[id]}"
+      instance_name = ec2.describe_instances({instance_ids: [id]}).reservations[0].instances[0].tags.select{|t| t.key == "Name"}[0].value
+      puts "#{id} (#{instance_name}) state changed #{past_instances[id]} -> #{instances[id]}"
     end
   end
 end
